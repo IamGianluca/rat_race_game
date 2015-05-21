@@ -55,12 +55,46 @@ class Maze(object):
 
     def __str__(self):
         """ (Maze) -> str
+        TO-DO (grossi): Use unitest module to do proper unit tests. Doctest is a more visual way to do this, which is
+          not always advisable. For instance in this case I cannot check the output of maze.__str__ but have to use
+          the print command
 
         :return: print maze to the screen
 
-        >>>
+        >>> maze = Maze([['#', '#', '#', '#', '#', '#', '#'], \
+        ['#', '.', '.', '.', '.', '.', '#'], \
+        ['#', '.', '#', '#', '#', '.', '#'], \
+        ['#', '.', '.', '@', '#', '.', '#'], \
+        ['#', '@', '#', '.', '@', '.', '#'], \
+        ['#', '#', '#', '#', '#', '#', '#']], \
+        Rat('J', 1, 1), Rat('P', 1, 4))
+        >>> print maze
+        #######
+        #J..P.#
+        #.###.#
+        #..@#.#
+        #@#.@.#
+        #######
+        J at (1, 1) ate 0 sprouts.
+        P at (1, 4) ate 0 sprouts.
         """
-        return "{0} \n {1} \n {2}".format(self.maze, self.rat1.__str__, self.rat2.__str__)
+
+        # Place rats in the maze
+        self.maze[self.rat1.row][self.rat1.column] = self.rat1.symbol
+        self.maze[self.rat2.row][self.rat2.column] = self.rat2.symbol
+
+        # Cast maze to string format
+        maze_string = ""
+        for row in self.maze:
+            for c in row:
+                maze_string += str(c)
+            maze_string += "\n"
+
+        # TO-DO (grossi): find a less hacky way to do this
+        # Remove last newline
+        maze_string = maze_string[:-1]
+
+        return "{0}\n{1}.\n{2}.".format(str(maze_string), str(self.rat1), str(self.rat2))
 
 
 if __name__ == "__main__":
