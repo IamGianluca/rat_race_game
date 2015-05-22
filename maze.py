@@ -32,8 +32,8 @@ class Maze(object):
     def is_wall(self, row, column):
         """ (Maze, int, int) -> bool
 
-        :param row:
-        :param column:
+        :param row: row to check
+        :param column: column to check
         :return: boolean to show is the element is a wall
 
         >>> maze = Maze([['#', '#', '#', '#', '#', '#', '#'], \
@@ -52,6 +52,47 @@ class Maze(object):
             return True
         else:
             return False
+
+    def get_character(self, row, column):
+        """ (Maze, int, int) -> str
+
+        :param row: row to check
+        :param column: column to check
+        :return Return the character in the maze at the given row and column. If there is a rat at that location,
+          then its character should be returned rather than HALL.
+
+        >>> maze = Maze([['#', '#', '#', '#', '#', '#', '#'], \
+        ['#', '.', '.', '.', '.', '.', '#'], \
+        ['#', '.', '#', '#', '#', '.', '#'], \
+        ['#', '.', '.', '@', '#', '.', '#'], \
+        ['#', '@', '#', '.', '@', '.', '#'], \
+        ['#', '#', '#', '#', '#', '#', '#']], \
+        Rat('J', 1, 1), Rat('P', 1, 4))
+        >>> maze.get_character(1, 1)
+        'J'
+        >>> maze.get_character(0, 0)
+        '#'
+        """
+        if (row, column) == (self.rat1.row, self.rat1.column):
+            return self.rat1.symbol
+        elif (row, column) == (self.rat2.row, self.rat2.column):
+            return self.rat2.symbol
+        else:
+            return self.maze[row][column]
+
+    def move(self, rat, row, column):
+        """ (Maze, Rat, int, int) -> bool
+
+        :param rat:
+        :param row: a vertical direction change (UP, NO_CHANGE or DOWN)
+        :param column: a horizontal direction change (LEFT, NO_CHANGE or RIGHT)
+        :return: Move the rat in the given direction, unless there is a wall in the way. Also, check for a Brussels
+          sprout at that location and, if present: have the rat eat the Brussels sprout, make that location a HALL, and
+          decrease the value that num_sprouts_left refers to by one. Return True if and only if there wasn't a wall
+          in the way.
+
+        >>>
+        """
 
     def __str__(self):
         """ (Maze) -> str
