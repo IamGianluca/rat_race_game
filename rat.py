@@ -17,7 +17,7 @@ RAT_2_CHAR = 'P'
 class Rat(object):
     """ A rat caught in a maze. """
 
-    def __init__(self, symbol, row, column):
+    def __init__(self, symbol, row, column, num_sprouts_eaten=0):
         """ (Rat, str, int, int) -> NoneType
 
         Initialise an instance of class Rat
@@ -31,11 +31,16 @@ class Rat(object):
         1
         >>> jesse.symbol
         'J'
+        >>> jesse.num_sprouts_eaten
+        0
+        >>> jesse.eat_sprout()
+        >>> jesse.num_sprouts_eaten
+        1
         """
         self.symbol = symbol
         self.row = row
         self.column = column
-        self.num_sprouts_eaten = 0
+        self.num_sprouts_eaten = num_sprouts_eaten
 
     def set_location(self, row, column):
         """ (Rat, int, int) -> NoneType
@@ -76,6 +81,9 @@ class Rat(object):
         >>> jesse = Rat("J", 1, 1)
         >>> jesse.__str__()
         'J at (1, 1) ate 0 sprouts'
+        >>> jesse.eat_sprout()
+        >>> jesse.__str__()
+        'J at (1, 1) ate 1 sprouts'
         """
         return '{0} at ({1}, {2}) ate {3} sprouts'.format(self.symbol, self.row, self.column, self.num_sprouts_eaten)
 
@@ -88,7 +96,6 @@ class Maze(object):
         :param maze represents the maze to be initialized
         :param rat1 the second parameter represents the contents of the maze
         :param rat2 the third parameter represents the first rat in the maze
-        :param num_sprouts_left represents the second rat in the maze
 
         >>> maze = Maze([['#', '#', '#', '#', '#', '#', '#'], \
         ['#', '.', '.', '.', '.', '.', '#'], \
@@ -215,9 +222,8 @@ class Maze(object):
             if self.get_character(rat_temp.row, rat_temp.column) == SPROUT:
                 rat_temp.eat_sprout()
                 self.num_sprouts_left -= 1
-                self.maze[initial_position_row][initial_position_column] = HALL
+            self.maze[initial_position_row][initial_position_column] = HALL
             return True
-
 
     def __str__(self):
         """ (Maze) -> str
