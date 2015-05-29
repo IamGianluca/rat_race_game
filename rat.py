@@ -113,7 +113,7 @@ class Maze(object):
         count = 0
         for i in range(0, len(maze)):
             for n in range(0, len(maze[0])):
-                if maze[i][n] == '@':
+                if maze[i][n] == SPROUT:
                     count += 1
 
         self.num_sprouts_left = count
@@ -137,7 +137,7 @@ class Maze(object):
         >>> maze.is_wall(4, 4)
         False
         """
-        if self.maze[row][column] == '#':
+        if self.maze[row][column] == WALL:
             return True
         else:
             return False
@@ -187,9 +187,9 @@ class Maze(object):
         ['#', '@', '#', '.', '@', '.', '#'], \
         ['#', '#', '#', '#', '#', '#', '#']], \
         Rat('J', 1, 1), Rat('P', 1, 4))
-        >>> maze.move(Rat('J', 1, 1), 'UP', 'NO_CHANGE')
+        >>> maze.move(Rat('J', 1, 1), UP, NO_CHANGE)
         False
-        >>> maze.move(Rat('J', 1, 1), 'DOWN', 'NO_CHANGE')
+        >>> maze.move(Rat('J', 1, 1), DOWN, NO_CHANGE)
         True
         """
 
@@ -203,20 +203,20 @@ class Maze(object):
         initial_position_row = rat_temp.row
         initial_position_column = rat_temp.column
 
-        if row == 'UP':
+        if row == UP:
             rat_temp.set_location(initial_position_row - 1, initial_position_column)
-        if row == 'DOWN':
+        if row == DOWN:
             rat_temp.set_location(initial_position_row + 1, initial_position_column)
-        if column == 'LEFT':
+        if column == LEFT:
             rat_temp.set_location(initial_position_row, initial_position_column - 1)
-        if column == 'RIGHT':
+        if column == RIGHT:
             rat_temp.set_location(initial_position_row, initial_position_column + 1)
 
         # Check if
         if self.is_wall(rat_temp.row, rat_temp.column):
             return False
         else:
-            if self.get_character(rat_temp.row, rat_temp.column) == '@':
+            if self.get_character(rat_temp.row, rat_temp.column) == SPROUT:
                 rat_temp.eat_sprout()
                 self.num_sprouts_left -= 1
             return True
@@ -256,8 +256,8 @@ class Maze(object):
         P at (1, 4) ate 0 sprouts.
         """
         # Place rats in the maze
-        self.maze[self.rat1.row][self.rat1.column] = 'J'
-        self.maze[self.rat2.row][self.rat2.column] = 'P'
+        self.maze[self.rat1.row][self.rat1.column] = RAT_1_CHAR
+        self.maze[self.rat2.row][self.rat2.column] = RAT_2_CHAR
 
         # Cast maze to string format
         maze_string = ""
