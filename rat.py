@@ -193,16 +193,10 @@ class Maze(object):
         True
         """
 
-        # 1. First you want to find out which position "the rat" currently has (save the position, "somewhere").
-        # 2. Then "check" the vertical and the horizontal variables and perform the position changes provided.
-        # 3. Then you have to check if that new position is a wall, if it is a wall return false (in other words, no movement occurs and the function call terminates).
-        # 4. Otherwise you know that the movement is allowed and can therefore check if the new position contains a sprout. If the new position contains a sprout you will have to "eat it", delete it from the maze and lower the total number of sprouts left.
-        # 5. Regardless of whether the new position contained a sprout or not, you should now change the position of your rat to that new position.
-        # 6. Then simply return true, because the move was successful.
-
         initial_position_row = rat_temp.row
         initial_position_column = rat_temp.column
 
+        # Temporary move rat to new position
         if row == UP:
             rat_temp.set_location(initial_position_row - 1, initial_position_column)
         if row == DOWN:
@@ -212,14 +206,18 @@ class Maze(object):
         if column == RIGHT:
             rat_temp.set_location(initial_position_row, initial_position_column + 1)
 
-        # Check if
+        # If new position is a wall make the rat go back to its original position and return False
         if self.is_wall(rat_temp.row, rat_temp.column):
+            rat_temp.set_location(initial_position_row, initial_position_column)
             return False
         else:
             if self.get_character(rat_temp.row, rat_temp.column) == SPROUT:
                 rat_temp.eat_sprout()
                 self.num_sprouts_left -= 1
+                rat_temp.num_sprouts_eaten += 1
+                self.maze[initial_position_row][initial_position_column] = HALL
             return True
+
 
     def __str__(self):
         """ (Maze) -> str
@@ -244,15 +242,6 @@ class Maze(object):
         #@#.@.#
         #######
         J at (1, 1) ate 0 sprouts.
-        P at (1, 4) ate 0 sprouts.
-        >>> maze.move(Rat('J', 1, 1), 'DOWN', 'NO_CHANGE')
-        #######
-        #...P.#
-        #J###.#
-        #..@#.#
-        #@#.@.#
-        #######
-        J at (2, 1) ate 0 sprouts.
         P at (1, 4) ate 0 sprouts.
         """
         # Place rats in the maze
