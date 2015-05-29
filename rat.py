@@ -17,7 +17,7 @@ RAT_2_CHAR = 'P'
 class Rat(object):
     """ A rat caught in a maze. """
 
-    def __init__(self, symbol, row, column, num_sprouts_eaten = 0):
+    def __init__(self, symbol, row, column):
         """ (Rat, str, int, int) -> NoneType
 
         Initialise an instance of class Rat
@@ -26,7 +26,7 @@ class Rat(object):
         :param row: the row where the rat is located
         :param column: the column where the rate is located
 
-        >>> jesse = Rat("J", 1, 1, 0)
+        >>> jesse = Rat("J", 1, 1)
         >>> jesse.row
         1
         >>> jesse.symbol
@@ -35,14 +35,14 @@ class Rat(object):
         self.symbol = symbol
         self.row = row
         self.column = column
-        self.num_sprouts_eaten = num_sprouts_eaten
+        self.num_sprouts_eaten = 0
 
     def set_location(self, row, column):
         """ (Rat, int, int) -> NoneType
 
         Set the Rat's row and col instance variables to the given row and column.
 
-        >>> jesse = Rat("J", 1, 1, 0)
+        >>> jesse = Rat("J", 1, 1)
         >>> jesse.set_location(1, 2)
         >>> jesse.row
         1
@@ -57,7 +57,7 @@ class Rat(object):
 
         The first parameter represents a rat. Add one to the rat's instance variable
 
-        >>> jesse = Rat("J", 1, 1, 0)
+        >>> jesse = Rat("J", 1, 1)
         >>> jesse.eat_sprout()
         >>> jesse.num_sprouts_eaten
         1
@@ -73,7 +73,7 @@ class Rat(object):
         A legit output could be something like: 'J at (4, 3) ate 2 sprouts.'
         Do not put a newline character ('\n') at the end of the string.
 
-        >>> jesse = Rat("J", 1, 1, 0)
+        >>> jesse = Rat("J", 1, 1)
         >>> jesse.__str__()
         'J at (1, 1) ate 0 sprouts'
         """
@@ -113,7 +113,7 @@ class Maze(object):
         count = 0
         for i in range(0, len(maze)):
             for n in range(0, len(maze[0])):
-                if maze[i][n] == SPROUT:
+                if self.maze[i][n] == SPROUT:
                     count += 1
 
         self.num_sprouts_left = count
@@ -211,10 +211,10 @@ class Maze(object):
             rat_temp.set_location(initial_position_row, initial_position_column)
             return False
         else:
+            # If sprout in the rat new position, eat sprout and reduce the count of left sprouts in the maze
             if self.get_character(rat_temp.row, rat_temp.column) == SPROUT:
                 rat_temp.eat_sprout()
                 self.num_sprouts_left -= 1
-                rat_temp.num_sprouts_eaten += 1
                 self.maze[initial_position_row][initial_position_column] = HALL
             return True
 
